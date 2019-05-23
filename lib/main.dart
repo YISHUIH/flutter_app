@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ge/res/color.dart';
 import 'package:flutter_ge/res/routes.dart';
 import 'package:flutter_ge/widget/home/HomeWidget.dart';
 import 'package:flutter_ge/widget/mine/MineWidget.dart';
-import 'package:flutter_ge/widget/page/expertjz/ExpertJZListPage.dart';
-import 'package:flutter_ge/res/color.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
