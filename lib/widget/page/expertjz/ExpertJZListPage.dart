@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ge/mode/Banner.dart';
 import 'package:flutter_ge/widget/listwidget/ExpertJZListWidget.dart';
-///Copyright , 2015-2019, 健康无忧网络科技有限公司 <br>
-///Author: 陈刘磊 1070379530@qq.com <br>
+///Copyright , 2015-2019,  <br>
+///Author:  1070379530@qq.com <br>
 ///Date: 2019/5/10 16:21    <br>
 ///Description: 专家讲座列表   <br>
 class ExpertJZListPage extends StatefulWidget {

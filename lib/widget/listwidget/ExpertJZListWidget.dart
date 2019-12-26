@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ge/mode/Banner.dart';
 import 'package:flutter_ge/widget/page/expertjz/ExpertJZDetailPage.dart';
 
-///Copyright , 2015-2019, 健康无忧网络科技有限公司 <br>
-///Author: 陈刘磊 1070379530@qq.com <br>
+///Copyright , 2015-2019,  <br>
+///Author:  1070379530@qq.com <br>
 ///Date: 2019/5/9 16:46    <br>
 ///Description: 专家讲座列表   <br>
 class ExpertJZListWidget extends StatelessWidget {
@@ -24,7 +24,7 @@ class ExpertJZListWidget extends StatelessWidget {
       //垂直间隔
       mainAxisSpacing: 28.0,
       children: _getChildren(context),
-      childAspectRatio: 1 / 1.1,
+      childAspectRatio: 1 / 1.2,
       padding: EdgeInsets.only(left: 16, top: 10, right: 16, bottom: 10),
       physics: physics,
     );
@@ -41,7 +41,7 @@ class ExpertJZListWidget extends StatelessWidget {
             children: <Widget>[
               Stack(
                 children: <Widget>[
-                  Image.network(_bannerInfo.imageUrl),
+                  FadeInImage.assetNetwork(placeholder: "images/3.0x/icon_consultation_regular.png", image: _bannerInfo.imageUrl),
                   Positioned(
                     child: Image.asset(
                       "images/3.0x/icon_video_play.png",

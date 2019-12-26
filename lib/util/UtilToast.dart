@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-/**
- * Copyright , 2015-2019, 健康无忧网络科技有限公司 <br>
- * Author: 陈刘磊 1070379530@qq.com <br>
- * Date: 2019/5/6 11:04    <br>
- * Description: 类似安卓吐司的功能，消息提示   <br>
- */
+///
+///Copyright , 2015-2019,  <br>
+///Author:  1070379530@qq.com <br>
+///Date: 2019/5/6 11:04    <br>
+///Description: 类似安卓吐司的功能，消息提示   <br>
+///
 class Toast {
-  /**
-   * toast靠它加到屏幕上
-   */
+  ///
+  ///toast靠它加到屏幕上
+  ///
   static OverlayEntry _overlayEntry;
   static String _msg;
 

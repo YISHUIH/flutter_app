@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ge/mode/Banner.dart';
 import 'package:flutter_ge/widget/page/information/InformationDetailPage.dart';
 
-///Copyright , 2015-2019, 健康无忧网络科技有限公司 <br>
-///Author: 陈刘磊 1070379530@qq.com <br>
+///Copyright , 2015-2019,  <br>
+///Author:  1070379530@qq.com <br>
 ///Date: 2019/5/20 9:26    <br>
 ///Description: 医学资讯列表   <br>
 class InformationListWidget extends StatelessWidget {

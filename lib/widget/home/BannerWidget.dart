@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ge/mode/Banner.dart';
 import 'package:flutter_ge/util/UtilToast.dart';
 
-///Copyright , 2015-2019, 健康无忧网络科技有限公司 <br>
-///Author: 陈刘磊 1070379530@qq.com <br>
+///Copyright , 2015-2019,  <br>
+///Author:  1070379530@qq.com <br>
 ///Date: 2019/5/6 17:02    <br>
 ///Description: 首页Banner轮播图部分   <br>
 
@@ -24,7 +24,6 @@ class _BannerWidgetState extends State<BannerWidget> {
 
   //pageView控制器
   PageController _pageController = PageController();
-
 
   List<Widget> _list = List();
   bool _isEndScroll = true;
@@ -79,19 +78,25 @@ class _BannerWidgetState extends State<BannerWidget> {
   }
 
   void showBanner() {
-    _list.clear();
+    List<Widget> bannerList = List();
     for (int i = 0; i < widget._bannerList.length; i++) {
       String url = widget._bannerList[i].imageUrl;
-      _list.add(
+      bannerList.add(
         GestureDetector(
-            onTap: () {Toast.toast(context, url);},
+            onTap: () {
+              Toast.toast(context, url);
+            },
             child: Container(
                 decoration: BoxDecoration(
+                    color: Colors.amberAccent,
                     borderRadius: BorderRadius.all(Radius.circular(4)),
                     image: DecorationImage(
                         image: NetworkImage(url), fit: BoxFit.fill)))),
       );
     }
+    setState(() {
+      _list = bannerList;
+    });
   }
 
   List<Widget> _itemList = List();

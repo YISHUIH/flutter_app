@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ge/mode/Banner.dart';
 import 'package:flutter_ge/res/color.dart';
 
-///Copyright , 2015-2019, 健康无忧网络科技有限公司 <br>
-///Author: 陈刘磊 1070379530@qq.com <br>
+///Copyright , 2015-2019,  <br>
+///Author:  1070379530@qq.com <br>
 ///Date: 2019/5/8 16:19    <br>
 ///Description: 首页通知模块   <br>
+// ignore: must_be_immutable
 class TipWidget extends StatefulWidget {
   List<BannerInfo> _bannerList = List();
 
@@ -18,12 +19,10 @@ class TipWidget extends StatefulWidget {
 }
 
 class _TipWidgetState extends State<TipWidget> {
-
-
-
-
+  TipPageViewWidget tipPageViewWidget;
   @override
   Widget build(BuildContext context) {
+    tipPageViewWidget=TipPageViewWidget(widget._bannerList);
     return Container(
       decoration: BoxDecoration(color: colors.them_bg_gray),
       margin: EdgeInsets.only(left: 16, right: 16),
@@ -53,8 +52,16 @@ class _TipWidgetState extends State<TipWidget> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    tipPageViewWidget._clearTimer();
+  }
 }
 
+// ignore: must_be_immutable
 class TipPageViewWidget extends StatelessWidget {
   List<BannerInfo> _bannerList = List();
   List<Widget> _childrenList = List();
@@ -91,6 +98,7 @@ class TipPageViewWidget extends StatelessWidget {
         },
       ),
     );
+    _startTimer();
     return _container;
   }
 
@@ -115,19 +123,19 @@ class TipPageViewWidget extends StatelessWidget {
   void _startTimer() {
     _timer = Timer.periodic(Duration(seconds: 3), (s) {
       if (_isEndScroll) {
-        _index += 1;
-        if (_index == _childrenList.length) {
-          _index = 0;
-          _pageController.jumpToPage(_index);
+        var i = _index + 1;
+        if (i == _bannerList.length) {
+          i = 0;
+          _pageController.jumpToPage(i);
         } else {
-          _pageController.animateToPage(_index,
-              duration: Duration(seconds: 1), curve: Curves.linear);
+          _pageController.animateToPage(i,
+              duration: Duration(seconds: 3), curve: Curves.fastLinearToSlowEaseIn);
         }
       }
     });
   }
 
-  void clearTimer() {
+  void _clearTimer() {
     if (_timer != null) {
       _timer.cancel();
       _timer = null;

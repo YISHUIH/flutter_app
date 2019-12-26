@@ -6,6 +6,8 @@
  */
 import 'package:flutter/material.dart';
 
+import '../mine/default_footer.dart';
+
 class MineWidget extends StatefulWidget {
   @override
   _MineWidgetState createState() => _MineWidgetState();
@@ -17,22 +19,24 @@ class _MineWidgetState extends State<MineWidget> {
     return SafeArea(
         child: MyRefreshDemo(
             child: Stack(
-      children: <Widget>[
-        Container(
-          child: Text("dddddddddd"),
-          color: Colors.blue,
-        ),
-        ListView(
-          shrinkWrap: true,
-          children: _getChild(),
-        )
-      ],
-    )));
+              children: <Widget>[
+                Container(
+                  child: Text("dddddddddd"),
+                  color: Colors.blue,
+                ),
+                GridView(
+                  shrinkWrap: true,
+                  gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+                  children: _getChild(),
+                )
+              ],
+            )));
   }
 }
 
 List<Widget> _getChild() {
-  return List.generate(20, (index) {
+  return List.generate(100, (index) {
     return Container(
       color: Colors.white,
       padding: EdgeInsets.all(20.0),
@@ -42,15 +46,22 @@ List<Widget> _getChild() {
 }
 
 class MyRefreshDemo extends StatefulWidget {
-  const MyRefreshDemo(
-      {@required this.child,
-      this.notificationPredicate = defaultScrollNotificationPredicate,
-      this.headHeight = 150.0,
-      this.footHeight = -150.0})
-      : assert(child != null),
-        assert(notificationPredicate != null);
+  MyRefreshDemo({@required this.child,
+    this.notificationPredicate = defaultScrollNotificationPredicate,
+    this.headHeight = 150.0,
+    this.footHeight = -150.0, Widget footer,}) {
+    assert(child != null);
+    assert(notificationPredicate != null);
+    if (footer == null) {
+      footer = DefaultFooter();
+    } else {
+      this.footer = footer;
+    }
+  }
+
 
   final Widget child;
+  Widget footer = DefaultFooter();
   final ScrollNotificationPredicate notificationPredicate;
   final double headHeight;
   final double footHeight;
@@ -60,9 +71,9 @@ class MyRefreshDemo extends StatefulWidget {
 }
 
 class _MyRefreshDemoState extends State<MyRefreshDemo> {
-  _RefreshIndicatorMode _mode;
+  RefreshIndicatorMode _mode;
   bool _isIndicatorAtTop;
-  double _offest = 0.0;
+  double _offset = 0.0;
 
   bool _handleScrollNotification(ScrollNotification notification) {
     if (!widget.notificationPredicate(notification)) {
@@ -72,7 +83,7 @@ class _MyRefreshDemoState extends State<MyRefreshDemo> {
     if (notification is ScrollUpdateNotification) {
       if (_mode != null) {
         setState(() {
-          _offest = 0.0;
+          _offset = 0.0;
         });
       }
     }
@@ -81,7 +92,7 @@ class _MyRefreshDemoState extends State<MyRefreshDemo> {
       //开始
       setState(() {
         _isIndicatorAtTop = true;
-        _mode = _RefreshIndicatorMode.drag;
+        _mode = RefreshIndicatorMode.drag;
       });
     }
 
@@ -92,25 +103,26 @@ class _MyRefreshDemoState extends State<MyRefreshDemo> {
       var direction = delta.direction;
       if (direction > 0) {
         //下拉
-        _mode = _RefreshIndicatorMode.drag;
+        _mode = RefreshIndicatorMode.drag;
       } else {
         //上拉
-        _mode = _RefreshIndicatorMode.drag;
+        _mode = RefreshIndicatorMode.drag;
       }
       setState(() {
-        _offest += delta.dy;
+        _offset += delta.dy;
       });
+
       return true;
     }
     if (notification is ScrollEndNotification) {
       //结束
 
-      if (_offest > widget.headHeight / 3 * 2) {
-        _offest = widget.headHeight;
-      } else if (_offest < widget.footHeight / 3 * 2) {
-        _offest = widget.footHeight;
+      if (_offset > widget.headHeight / 3 * 2) {
+        _offset = widget.headHeight;
+      } else if (_offset < widget.footHeight / 3 * 2) {
+        _offset = widget.footHeight;
       } else {
-        _offest = 0.0;
+        _offset = 0.0;
         _isIndicatorAtTop = false;
       }
       setState(() {});
@@ -122,12 +134,8 @@ class _MyRefreshDemoState extends State<MyRefreshDemo> {
     if (notification.depth != 0) {
       return false;
     }
-    if (notification.leading) {
-//      print("glow===$notification ====== 刷新");
-    } else {
-//      print("glow===$notification ====== 更多");
-    }
-    if (_mode == _RefreshIndicatorMode.drag) {
+    if (notification.leading) {} else {}
+    if (_mode == RefreshIndicatorMode.drag) {
       notification.disallowGlow();
       return true;
     }
@@ -147,7 +155,8 @@ class _MyRefreshDemoState extends State<MyRefreshDemo> {
 
     if (_mode == null) {
       return Transform(
-        transform: Matrix4.identity()..translate(0.0, _offest),
+        transform: Matrix4.identity()
+          ..translate(0.0, _offset),
         child: child,
       );
     }
@@ -155,7 +164,8 @@ class _MyRefreshDemoState extends State<MyRefreshDemo> {
     return Stack(
       children: <Widget>[
         Transform(
-          transform: Matrix4.identity()..translate(0.0, _offest),
+          transform: Matrix4.identity()
+            ..translate(0.0, _offset),
           child: child,
         ),
         Positioned(
@@ -164,7 +174,8 @@ class _MyRefreshDemoState extends State<MyRefreshDemo> {
             top: -150,
             height: 150,
             child: Transform(
-              transform: Matrix4.identity()..translate(0.0, _offest),
+              transform: Matrix4.identity()
+                ..translate(0.0, _offset),
               child: Center(
                 child: Text("下拉刷新"),
               ),
@@ -175,9 +186,10 @@ class _MyRefreshDemoState extends State<MyRefreshDemo> {
             left: 0.0,
             right: 0.0,
             child: Transform(
-              transform: Matrix4.identity()..translate(0.0, _offest),
+              transform: Matrix4.identity()
+                ..translate(0.0, _offset),
               child: Center(
-                child: Text("上拉加载更多"),
+                child:widget.footer,
               ),
             )),
       ],
@@ -185,7 +197,7 @@ class _MyRefreshDemoState extends State<MyRefreshDemo> {
   }
 }
 
-enum _RefreshIndicatorMode {
+enum RefreshIndicatorMode {
   drag, // Pointer is down.
   armed, // Dragged far enough that an up event will run the onRefresh callback.
   snap, // Animating to the indicator's final "displacement".
@@ -193,4 +205,12 @@ enum _RefreshIndicatorMode {
   done, // Animating the indicator's fade-out after refreshing.
   canceled, // Animating the indicator's fade-out after not arming.
   loadMore
+}
+
+abstract class PointMode {
+  void onMove();
+
+  void onOverFlow();
+
+  void onWork();
 }
